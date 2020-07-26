@@ -638,7 +638,7 @@ U 1 1 5E332BD9
 P 3150 5400
 F 0 "J3" V 3212 5644 50  0000 L CNN
 F 1 "0.1\" x 5" V 3303 5644 50  0000 L CNN
-F 2 "josh-connectors:Castellated_P2.54x5" H 3150 5400 50  0001 C CNN
+F 2 "josh-connectors:Castellated_Short_2.54x5" H 3150 5400 50  0001 C CNN
 F 3 "~" H 3150 5400 50  0001 C CNN
 	1    3150 5400
 	0    1    1    0   
@@ -731,7 +731,7 @@ U 1 1 5E3339AD
 P 2900 4850
 F 0 "J2" H 3100 4000 50  0000 R CNN
 F 1 "0.1\" x 12" H 3100 4100 50  0000 R CNN
-F 2 "josh-connectors:Castellated_P2.54x12" H 2900 4850 50  0001 C CNN
+F 2 "josh-connectors:Castellated_Short_P2.54x12" H 2900 4850 50  0001 C CNN
 F 3 "~" H 2900 4850 50  0001 C CNN
 	1    2900 4850
 	-1   0    0    1   
@@ -1064,7 +1064,7 @@ U 1 1 5E33B6F5
 P 3400 4750
 F 0 "J4" H 3350 5500 50  0000 C CNN
 F 1 "0.1\" x 12" H 3500 5400 50  0000 C CNN
-F 2 "josh-connectors:Castellated_P2.54x12" H 3400 4750 50  0001 C CNN
+F 2 "josh-connectors:Castellated_Short_P2.54x12" H 3400 4750 50  0001 C CNN
 F 3 "~" H 3400 4750 50  0001 C CNN
 	1    3400 4750
 	1    0    0    -1  
