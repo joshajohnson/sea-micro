@@ -1,5 +1,14 @@
 # pro-micro-c
 
-Arduino Pro Micro, but with a type C Connector and Elite-C Extra pins
+Arduino Pro Micro, but with a type C connector.
 
-Status: Both V0.1 and V0.2 Tested and working
+Features:
+V0.1
+	- Castellated pads
+	- "Elite-C" compatiable pinout
+
+V0.2 
+	- Removes castellated pads
+
+V0.3
+	- Reverts to Pro Micro + Type C connector, targeting low cost designs
