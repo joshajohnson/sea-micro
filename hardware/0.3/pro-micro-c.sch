@@ -697,8 +697,6 @@ $EndComp
 Text Label 8350 2750 2    50   ~ 0
 PB1
 Wire Wire Line
-	8350 2650 8100 2650
-Wire Wire Line
 	8350 2750 8100 2750
 Wire Wire Line
 	8350 2850 8100 2850
@@ -723,8 +721,6 @@ Wire Wire Line
 Wire Wire Line
 	8350 4250 8100 4250
 Wire Wire Line
-	8350 4450 8100 4450
-Wire Wire Line
 	8350 4550 8100 4550
 Wire Wire Line
 	8100 4750 8450 4750
@@ -738,7 +734,7 @@ Text Label 8350 3150 2    50   ~ 0
 PB5
 Text Label 8350 3250 2    50   ~ 0
 PB6
-NoConn ~ 8350 2650
+NoConn ~ 8100 2650
 Text Label 8350 3550 2    50   ~ 0
 PC6
 Text Label 8350 3850 2    50   ~ 0
@@ -753,7 +749,6 @@ Text Label 8350 4250 2    50   ~ 0
 PD4
 Text Label 8350 4550 2    50   ~ 0
 PD7
-NoConn ~ 8350 4450
 Wire Wire Line
 	8100 4850 8350 4850
 Text Label 8350 4850 2    50   ~ 0
@@ -1076,4 +1071,29 @@ Wire Wire Line
 	5900 2500 5900 2450
 Wire Wire Line
 	5900 2450 5950 2450
+NoConn ~ 8100 4450
+$Comp
+L Graphic:Logo_Open_Hardware_Small LOGO1
+U 1 1 5FD53DBA
+P 6350 7450
+F 0 "LOGO1" H 6350 7725 50  0001 C CNN
+F 1 "Logo_Open_Hardware_Small" H 6350 7225 50  0001 C CNN
+F 2 "josh-logos:OSHW_Logo_3.6x3.6_F.Mask" H 6350 7450 50  0001 C CNN
+F 3 "~" H 6350 7450 50  0001 C CNN
+F 4 "DNP" H 6350 7450 50  0001 C CNN "DNP"
+	1    6350 7450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Graphic:SYM_Radio_Waves_Large SYM1
+U 1 1 5FD55A95
+P 5800 7400
+F 0 "SYM1" H 5800 7600 50  0001 C CNN
+F 1 "SYM_Radio_Waves_Large" H 5800 7150 50  0001 C CNN
+F 2 "josh-logos:sea-micro-silk" H 5800 7200 50  0001 C CNN
+F 3 "~" H 5830 7200 50  0001 C CNN
+F 4 "DNP" H 5800 7400 50  0001 C CNN "DNP"
+	1    5800 7400
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
