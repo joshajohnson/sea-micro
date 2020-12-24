@@ -9,10 +9,13 @@ from colorama import Fore
 import serial
 from serial.tools import list_ports
 import io
+from multiprocessing import Process
 
 def bootloader():
     ''' Flashes bootloader, using an external programmer connected to the ISP port on the test fixture.
         Defaults to AVRISPMKII, but can be used with a usbasp by changing the arg to -c.'''
+    global mcu_reset
+    mcu_reset = True
 
     bootloader = "avrdude -v -p atmega32u4 -c avrispmkii -P usb -Uflash:w:ATMega32U4-dfu-bootloader.hex:i"
     
@@ -25,8 +28,16 @@ def bootloader():
         print(f'{Fore.RED}#############################')
         exit()
 
+    print(f'{Fore.BLUE}BOOTLOADER FLASHED{Fore.WHITE}')
+
 def test_firmware():
     ''' Flash Test Firmware. Assumes atmel-dfu bootloader is already flashed to board. '''
+    global mcu_reset
+
+    if mcu_reset == False:
+        send_string(255) # Hard reset
+        mcu_reset = True
+        time.sleep(2)
 
     erase = "dfu-programmer atmega32u4 erase"
     flash = "dfu-programmer atmega32u4 flash sea_micro_test.hex"
@@ -41,6 +52,7 @@ def test_firmware():
 
     if retval == 0:
         print(f'{Fore.BLUE}RESETTING DUT{Fore.WHITE}')
+        mcu_reset = True
         retval = os.system(reset)
 
     if retval != 256: # For some reason the reset retval is 256 on success
@@ -50,18 +62,23 @@ def test_firmware():
         print(f'{Fore.RED}############################')
         exit()
 
+    print(f'{Fore.BLUE}TEST FIRMWARE FLASHED{Fore.WHITE}')
+
 def send_string(string):
-    serial_io.write(string)
+    serial_io.write(str(string) + "\r\n")
     serial_io.flush()
 
 def test_keys():
     ''' Test all IO with test fixture.
         Transmit number according to pin location, which test fixture will pull low, simulating key press.
         DUT will then respond with the alpha character (A=1, B=2 etc) which we can check. '''
+    global mcu_reset
 
-    # Connect to test fixture
-    uart = serial.Serial("/dev/ttyACM0", 115200, timeout=1)
-    serial_io = io.TextIOWrapper(io.BufferedRWPair(uart, uart))
+    # Ensure board is out of reset
+    if (mcu_reset == False):
+        print(f'{Fore.BLUE}ENSURING 32U4 READY{Fore.WHITE}')
+        os.system("dfu-programmer atmega32u4 reset")
+        time.sleep(1)
 
     for char in range(1,19): # sea-micro has 18 IO
 
@@ -88,9 +105,17 @@ def test_keys():
                 print(f'{Fore.RED}###############')
                 exit()
 
+    print(f'{Fore.BLUE}KEYS TEST PASSED{Fore.WHITE}')
+
 if __name__ == "__main__":
 
+    # Connect to test fixture
     serial_io = None
+    uart = serial.Serial("/dev/ttyACM0", 115200, timeout=0.1)
+    serial_io = io.TextIOWrapper(io.BufferedRWPair(uart, uart))
+
+    # State if board is fresh or already has test FW on there
+    mcu_reset = False
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-b", "--bootloader",    action='store_true')
@@ -102,17 +127,14 @@ if __name__ == "__main__":
 
     if args.bootloader:
         bootloader()
-        print(f'{Fore.BLUE}BOOTLOADER FLASHED{Fore.WHITE}')
         time.sleep(2)
     if args.qmk_firmware:
         test_firmware()
-        print(f'{Fore.BLUE}TEST FIRMWARE FLASHED{Fore.WHITE}')
         time.sleep(2)
     if args.test:
-        test_keys()
-        print(f'{Fore.BLUE}KEYS TEST PASSED{Fore.WHITE}')
+        test_keys()        
 
     send_string(32) # Status OKAY
     print(f'{Fore.GREEN}###################')
     print(f'{Fore.GREEN}ALL STEPS PASSED!!!')
-    print(f'{Fore.GREEN}###################')
+    print(f'{Fore.GREEN}###################{Fore.WHITE}')

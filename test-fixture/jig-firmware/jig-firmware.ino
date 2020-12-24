@@ -20,7 +20,7 @@
 #define HIGH_Z      128
 #define HARD_RESET  255
 
-void shift_out(uint32_t bitstream);
+void shift_out(uint16_t upper, uint16_t bs_lower);
 void press_key(uint8_t key);
 
 void setup() 
@@ -31,8 +31,10 @@ void setup()
   pinMode(SR_nCLR, OUTPUT);
   pinMode(SR_CLK, OUTPUT);
   pinMode(SR_RCLK, OUTPUT);
-  // Start high Z
-  digitalWrite(SR_nOE, HIGH);
+
+  digitalWrite(SR_nCLR, HIGH);
+  shift_out(0xFFFF, 0xFFFF); // Init High
+  digitalWrite(SR_nOE, LOW);
 
   // DUT nRST start high
   pinMode(DUT_nRST, OUTPUT);
@@ -41,8 +43,6 @@ void setup()
   // LEDs
   pinMode(LED_OKAY, OUTPUT);
   pinMode(LED_ERROR, OUTPUT);
-  digitalWrite(LED_OKAY, LOW);
-  digitalWrite(LED_ERROR, LOW);
 
   Serial.begin(115200);
 }
@@ -51,7 +51,7 @@ void loop()
 {
   while (Serial.available() > 0)
   {
-    uint8_t data = Serial.parseInt();
+    int data = Serial.parseInt();
 
     if (data >= 1 && data <= 18)
     {
@@ -66,27 +66,27 @@ void loop()
     }
     else if (data == STATE_OKAY)
     {
-      digitalWrite(STATE_ERROR, LOW);
-      digitalWrite(STATE_OKAY, HIGH);
+      digitalWrite(LED_ERROR, LOW);
+      digitalWrite(LED_OKAY, HIGH);
       Serial.println("State OKAY");
     }
     else if (data == STATE_ERROR)
     {
-      digitalWrite(STATE_ERROR, HIGH);
-      digitalWrite(STATE_OKAY, LOW);
+      digitalWrite(LED_ERROR, HIGH);
+      digitalWrite(LED_OKAY, LOW);
       Serial.println("State ERROR");
     }
     else if (data == STATE_RESET)
     {
-      digitalWrite(STATE_ERROR, LOW);
-      digitalWrite(STATE_OKAY, LOW);
+      digitalWrite(LED_ERROR, LOW);
+      digitalWrite(LED_OKAY, LOW);
       Serial.println("State RESET");
     }
     else if (data == HARD_RESET)
     {
       pinMode(DUT_nRST, OUTPUT);
       digitalWrite(DUT_nRST, LOW);
-      delay(50);
+      delay(1);
       digitalWrite(DUT_nRST, HIGH);
       Serial.println("Hard Reset DUT");
     }
@@ -95,22 +95,27 @@ void loop()
 
 void press_key(uint8_t key)
 {
-  shift_out(0xFFFFFF & ~(key - 1)); // 24 bits, active low, MSB first
+  uint16_t bs_upper = key > 16 ? ~(1 << ((key-16) - 1)) : 0xFFFF;
+  uint16_t bs_lower = key <= 16  ? ~(1 << (key - 1)) : 0xFFFF;
+
+  shift_out(bs_upper, bs_lower); // 24 bits, active low, MSB first
   delay(50);
-  shift_out(0xFFFFFF); // Release all keys
+  shift_out(0xFFFF, 0xFFFF); // Release all keys
   delay(1);
-  digitalWrite(SR_nOE, HIGH);
 
   Serial.print("Pressed Key: ");
   Serial.println(key, DEC);
 }
 
-void shift_out(uint32_t bitstream)
+void shift_out(uint16_t upper, uint16_t lower)
 {
+  Serial.print(upper, BIN);
+  Serial.println(lower, BIN);
+
   // Shift out 24 bits, MSB first
-  digitalWrite(SR_nOE, HIGH);
-  shiftOut(SR_SER, SR_CLK, MSBFIRST, (bitstream & 0xFF0000) >> 16); // third byte
-  shiftOut(SR_SER, SR_CLK, MSBFIRST, (bitstream & 0xFF00) >> 8);    // second byte
-  shiftOut(SR_SER, SR_CLK, MSBFIRST, (bitstream & 0xFF));           // first byte
-  digitalWrite(SR_nOE, LOW);
+  digitalWrite(SR_RCLK, LOW);
+  shiftOut(SR_SER, SR_CLK, MSBFIRST, (upper & 0xFF));           // third byte (MSB)
+  shiftOut(SR_SER, SR_CLK, MSBFIRST, (lower & 0xFF00) >> 8);    // second byte
+  shiftOut(SR_SER, SR_CLK, MSBFIRST, (lower & 0xFF));           // first byte (LSB)
+  digitalWrite(SR_RCLK, HIGH);
 }
