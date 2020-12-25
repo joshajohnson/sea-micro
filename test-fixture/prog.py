@@ -17,7 +17,7 @@ def bootloader():
     global mcu_reset
     mcu_reset = True
 
-    bootloader = "avrdude -v -p atmega32u4 -c avrispmkii -P usb -Uflash:w:ATMega32U4-dfu-bootloader.hex:i"
+    bootloader = "avrdude -C avrdude.conf -v -p atmega32u4 -c avrispmkii -P usb -U flash:w:bootloader_atmega32u4_1.0.0.hex:i -U lfuse:w:0x5E:m -U hfuse:w:0xD9:m -U efuse:w:0xC3:m"
     
     retval = os.system(bootloader)
 
@@ -55,10 +55,10 @@ def test_firmware():
         mcu_reset = True
         retval = os.system(reset)
 
-    if retval != 256: # For some reason the reset retval is 256 on success
+    if (retval != 0) and (retval != 256): # For some reason the reset retval is 256 on success
         send_string(33) # Error
         print(f'{Fore.RED}############################')
-        print(f'{Fore.RED}FAIL AT FLASHING QMK TEST!!!')
+        print(f'{Fore.RED}FAIL AT FLASHING TEST FW !!!')
         print(f'{Fore.RED}############################')
         exit()
 
