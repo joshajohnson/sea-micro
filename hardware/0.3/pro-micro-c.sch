@@ -4,10 +4,10 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title "Pro Micro C"
+Title "Sea Micro"
 Date "2020-12-11"
 Rev "0.3"
-Comp "Josh Johnson"
+Comp "Josh Johnson and Custom KBD"
 Comment1 ""
 Comment2 ""
 Comment3 ""

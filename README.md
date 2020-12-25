@@ -1,15 +1,22 @@
-# pro-micro-c
+# sea-micro
 
-Arduino Pro Micro, but with a type C connector.
+An Arduino Pro Micro, with but with a Type-C connector.
+
+Targeted as an alternative for the ubiquitous Pro Micro in DIY keyboard applications.
+
+![sea-micro photo](docs/sea-micro.jpeg)
 
 Features:
+- Pro Micro compatiable pinout.
+- Mid Mount USB Type-C Connector.
+- On-board reset button.
 
-V0.1
-	- Castellated pads
-	- "Elite-C" compatiable pinout
+Developed in conjunction with [Custom KBD](customkbd.com).
 
-V0.2 
-	- Removes castellated pads
+Revision History:
 
-V0.3
-	- Reverts to Pro Micro + Type C connector, targeting low cost design
+0.1 - "Elite-C" compatiable pinout, with added ESD protection.
+
+0.2 - Removes castellated pads for lower cost manufacturing.
+
+0.3 - Name changed to sea-micro, now targeting Pro Micro w/ Type-C feature set at the lowest cost possible.

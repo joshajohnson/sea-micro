@@ -4,9 +4,9 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev "0"
+Title "Pro Micro C"
+Date "2020-05-23"
+Rev "0.1"
 Comp "Josh Johnson"
 Comment1 ""
 Comment2 ""
