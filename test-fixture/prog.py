@@ -17,7 +17,7 @@ def bootloader():
     global mcu_reset
     mcu_reset = True
 
-    bootloader = "avrdude -C avrdude.conf -v -p atmega32u4 -c avrispmkii -P usb -U flash:w:bootloader_atmega32u4.hex:i -U lfuse:w:0x5E:m -U hfuse:w:0xD9:m -U efuse:w:0xC3:m"
+    bootloader = "avrdude -C avrdude.conf -v -p atmega32u4 -c avrispmkii -P usb -U flash:w:bootloader_atmega32u4.hex:i -U lfuse:w:0x5E:m -U hfuse:w:0xD9:m -U efuse:w:0xC3:m -F"
     
     retval = os.system(bootloader)
 
