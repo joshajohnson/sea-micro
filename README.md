@@ -20,3 +20,5 @@ Revision History:
 0.2 - Removes castellated pads for lower cost manufacturing.
 
 0.3 - Name changed to sea-micro, now targeting Pro Micro w/ Type-C feature set at the lowest cost possible.
+
+0.4 - Added D+ and D- pads on underside of PCB, DFM improvements for USB connector.
