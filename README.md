@@ -7,7 +7,7 @@ Targeted as an alternative for the ubiquitous Pro Micro in DIY keyboard applicat
 ![sea-micro photo](docs/sea-micro.jpeg)
 
 Features:
-- Pro Micro compatiable pinout.
+- Pro Micro compatible pinout.
 - Mid Mount USB Type-C Connector.
 - On-board reset button.
 
@@ -15,7 +15,7 @@ Developed in conjunction with [Custom KBD](customkbd.com).
 
 Revision History:
 
-0.1 - "Elite-C" compatiable pinout, with added ESD protection.
+0.1 - "Elite-C" compatible pinout, with added ESD protection.
 
 0.2 - Removes castellated pads for lower cost manufacturing.
 
